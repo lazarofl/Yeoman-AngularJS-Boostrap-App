@@ -11,9 +11,17 @@ angular.module('teste1App')
 	$scope.TaskName = '';
 	$scope.Tasks = [];
 
+	$scope.LoadTasks = function(){
+		Taskservice.Tasks().then(function (response) {
+			$scope.Tasks = response.data;
+		}, function (error){
+			window.alert(error);            
+		});
+	};
+
 	$scope.AddTask = function(){
-		Taskservice.Add($scope.TaskName).then(function (newTask) {
-			$scope.Tasks.push(newTask);
+		Taskservice.Add($scope.TaskName).then(function (response) {
+			$scope.Tasks.push(response.data);
 			$scope.TaskName = '';
 		}, function (error){
 			window.alert(error);            
@@ -21,11 +29,12 @@ angular.module('teste1App')
 	};
 
 	$scope.DoneTask = function(task){
-		Taskservice.Done(task,!task.done).then(function (newTask) {
-			$scope.Tasks[$scope.Tasks.indexOf(task)] = newTask;
+		Taskservice.Done(task,!task.done).then(function (response) {
+			$scope.Tasks[$scope.Tasks.indexOf(task)] = response.data;
 		}, function (error){
 			window.alert(error);            
 		});
 	};
 
+	$scope.LoadTasks();
 });

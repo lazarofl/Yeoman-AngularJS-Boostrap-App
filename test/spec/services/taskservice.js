@@ -16,7 +16,7 @@ describe('Service: Taskservice', function () {
   });
 
   it('ao adicionar uma tarefa de nome "Exemplo 1" ele retorna uma nova tarefa com o mesmo nome', function () {
-    var TaskName = "Exemplo 1";
+    var TaskName = 'Exemplo 1';
     Taskservice.Add(TaskName).then(function (result){
       expect(result.name).toBe(TaskName);
     });
@@ -24,7 +24,7 @@ describe('Service: Taskservice', function () {
 
   it('ao marcar uma tarefa aberta como done é retornado o objeto tarefa com o done = true', function () {
     var task = {
-      name: "Teste 1",
+      name: 'Teste 1',
       done: false
     };
 

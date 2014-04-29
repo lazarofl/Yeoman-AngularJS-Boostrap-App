@@ -1,53 +1,61 @@
 'use strict';
 
 angular.module('teste1App')
-.service('Taskservice', function Taskservice($q) {
+.service('Taskservice', function ($http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
-    this.Add = function(nome)
+    this.Tasks = function()
     {
-    	var deferred = $q.defer();
-    	try
-    	{
-    		if(nome === '') {
-    			throw 'Nome não informado';
-    		}
-
-    		var data = 
-    		{
-    			name: nome,
-    			done: false
-    		};
-    		deferred.resolve(data);
-    	}
-    	catch(error)
-    	{
-    		deferred.reject(error);
-    	}
-
-    	return deferred.promise;
+    	return $http.get('/tasks/').then(function(response) {
+            return response || null;
+        }, function(response) {
+            switch(response.status)
+            {
+                default:
+                throw 'nenhuma informação';
+            }
+        });
     };
 
+    this.Add = function(name)
+    {
+    	return $http.post('/tasks/add', {name: name, done: false}).then(function(response) {
+            return response || null;
+        }, function(response) {
+            switch(response.status)
+            {
+                default:
+                throw 'nenhuma informação';
+            }
+        });
+    };
 
     this.Done = function(task, done)
     {
-    	var deferred = $q.defer();
-    	try
-    	{
-    		if(task === null || task === undefined) {
-    			throw 'Nome não informado';
-    		}
-    		
-    		task.done = done;
-
-    		deferred.resolve(task);
-    	}
-    	catch(error)
-    	{
-    		deferred.reject(error);
-    	}
-
-    	return deferred.promise;
+    	task.done = done;
+    	return $http.post('/tasks/update', task).then(function(response) {
+            return response || null;
+        }, function(response) {
+            switch(response.status)
+            {
+                default:
+                throw 'nenhuma informação';
+            }
+        });
+    };
+    
+    this.Remove = function(task)
+    {
+    	return $http.delete('/tasks/' + task.id).then(function(response) {
+            return response || null;
+        }, function(response) {
+            switch(response.status)
+            {
+                default:
+                throw 'nenhuma informação';
+            }
+        });
     };
     
 });
+
